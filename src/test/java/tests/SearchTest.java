@@ -36,4 +36,26 @@ public class SearchTest extends BasePage {
         driver.findElement(By.className("header-search__submit")).click();
         assertTrue(driver.findElement(By.className("search-results__counter")).isDisplayed());
     }
+
+    @Test
+    public void incorrectSearchQueryTest() {
+        driver.get("https://epam.com/");
+        driver.findElement(By.xpath("//button[@id='onetrust-accept-btn-handler']")).click();
+        driver.findElement(By.className("header-search__button")).click();
+        driver.findElement(By.xpath("//input[@name='q']")).sendKeys("gewlwgewwrg");
+        driver.findElement(By.className("header-search__submit")).click();
+        assertTrue(driver.findElement(By.className("search-results--empty-result")).isDisplayed());
+    }
+
+    @Test
+    public void incorrectSearchQueryWithCorrectSuggestionTest() throws InterruptedException {
+        driver.get("https://epam.com/");
+        driver.findElement(By.xpath("//button[@id='onetrust-accept-btn-handler']")).click();
+        driver.findElement(By.className("header-search__button")).click();
+        driver.findElement(By.xpath("//input[@name='q']")).sendKeys("devepment");
+        driver.findElement(By.className("header-search__submit")).click();
+//        assertTrue(driver.findElement(By.className("search-results__auto-correct-message")).isDisplayed());
+        driver.findElement(By.className("search-results__auto-correct-term")).click();
+        assertTrue(driver.findElement(By.className("search-results__counter")).isDisplayed());
+    }
 }
